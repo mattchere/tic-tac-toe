@@ -1,1 +1,151 @@
 @import url('reset.css');
+
+body {
+    background-color: #3C46FF;
+    color: white;
+    font-family: 'Lato', sans-serif;
+}
+
+.header {
+    margin: 50px auto;
+    text-align: center;
+    width: 400px;
+}
+h1 {
+    font-size: 75px;
+}
+h3 {
+    font-size: 30px;
+}
+
+.main {
+    border: 2px solid white;
+    height: 400px;
+    margin: 0 auto;
+    width: 400px;
+}
+
+.settings,
+.board {
+    background-color: #44477F;    
+    height: 400px;
+    width: 400px;
+}
+.choose-sym,
+.choose-opp,
+.play-area,
+.board,
+.square {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+         box-sizing: border-box;  
+}
+.choose-sym,
+.choose-opp {
+    display: inline-block;
+    height: 325px;
+    padding: 50px 0;
+    text-align: center;
+    vertical-align: top;
+    width: 200px;
+}
+.symbol,
+.opponent,
+.btn-play {
+    background-color: grey;
+    border: 2px solid #44477F;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 50px;
+    margin: 50px auto;
+}
+.symbol:hover,
+.opponent:hover {
+    border: 2px solid white;
+}
+.symbol {
+    width: 50px;
+}
+.opponent,
+.btn-play {
+    
+    width: 100px;
+}
+.settings p {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.play-area {
+    background-color: #44477F;
+    height: 75px;
+    padding: 10px;
+    text-align: center;
+}
+.btn-play {
+    margin: 0 auto;
+    font-size: 30px;
+}
+.selected {
+    background-color: #A7A1A1;
+    border: 2px solid white;
+}
+.btn-play:hover {
+    background-color: #A7A1A1;
+}
+.board {
+    padding: 20px;
+}
+.square {
+    border-color: white;
+    border-style: solid;
+    cursor: pointer;
+    display: inline-block;
+    height: 120px;
+    width: 120px;
+}
+.mid {
+    margin: -2px 0;
+}
+
+#tl {
+    border-width: 0 2px 2px 0;
+}
+#tm {
+    border-width: 0 2px 2px 2px;
+}
+#tr {
+    border-width: 0 0 2px 2px;
+}
+#ml {
+    border-width: 2px 2px 2px 0;
+}
+#mm {
+    border-width: 2px 2px 2px 2px; 
+}
+#mr {
+    border-width: 2px 0 2px 2px;
+}
+#bl {
+    border-width: 2px 2px 0 0;
+}
+#bm {
+    border-width: 2px 2px 0 2px;
+}
+#br {
+    border-width: 2px 0 0 2px;
+}
+
+
+
+
+

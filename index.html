@@ -12,8 +12,8 @@
 
     <title>Tic Tac Toe</title>
 
-    <!-- Raleway font -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="main.css" rel="stylesheet">
@@ -21,7 +21,39 @@
 </head>
 
 <body>
-    
+
+    <header class="header">
+        <h1>Tic Tac Toe</h1>
+    </header>
+
+    <section class="main">
+        <div class="settings">
+            <div class="choose-sym">
+                <h3>With Symbol</h3>
+                <div class="symbol selected" id="x" role="button"><p>X</p></div>
+                <div class="symbol" id="o" role="button"><p>O</p></div>
+            </div><!--
+            --><div class="choose-opp">
+                <h3>Play Against</h3>
+                <div class="opponent selected" id="comp" role="button"><p>Computer</p></div>
+                <div class="opponent" id="player" role="button"><p>Player</p></div>
+            </div>
+            <div class="play-area">
+                <div class="btn-play" id="play" role="button"><p>Play</p></div>
+            </div>
+        </div>
+        <div class="board">
+            <div class="square" id="tl"></div><!--
+            --><div class="square" id="tm"></div><!--
+            --><div class="square" id="tr"></div>
+            <div class="square mid" id="ml"></div><!--
+            --><div class="square mid" id="mm"></div><!--
+            --><div class="square mid" id="mr"></div>
+            <div class="square bot" id="bl"></div><!--
+            --><div class="square" id="bm"></div><!--
+            --><div class="square" id="br"></div>
+        </div>
+    </section>
     
 
     <!-- JavaScript files -->
