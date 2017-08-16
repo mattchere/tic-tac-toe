@@ -26,7 +26,8 @@ h3 {
 }
 
 .settings,
-.board {
+.board,
+.end {
     background-color: #44477F;    
     height: 400px;
     width: 400px;
@@ -110,11 +111,18 @@ h3 {
     border-style: solid;
     cursor: pointer;
     display: inline-block;
+    font-size: 50px;
     height: 120px;
+    line-height: 120px;   
+    text-align: center;
+    vertical-align: middle;
     width: 120px;
 }
-.mid {
-    margin: -2px 0;
+.end {
+    font-size: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 400px;
 }
 
 #tl {
