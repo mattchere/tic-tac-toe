@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Initialise variables
     var x = true;
@@ -15,35 +15,36 @@ $(document).ready(function() {
         br: 0
     };
     var turn;
+    var end = false;
 
     // Hide the board in the beginning
     $('.board').hide();
     $('.end').hide();
 
     // Click events to select player settings
-    $('#x').click(function(event) {
+    $('#x').click(function (event) {
         x = true;
         $('#x').addClass('selected');
         $('#o').removeClass('selected');
     });
-    $('#o').click(function(event) {
+    $('#o').click(function (event) {
         x = false;
         $('#o').addClass('selected');
         $('#x').removeClass('selected');
     })
-    $('#comp').click(function(event) {
+    $('#comp').click(function (event) {
         comp = true;
         $('#comp').addClass('selected');
         $('#player').removeClass('selected');
     });
-    $('#player').click(function(event) {
+    $('#player').click(function (event) {
         comp = false;
         $('#player').addClass('selected');
         $('#comp').removeClass('selected');
     });
 
     // Play button to start the game with current settings
-    $('#play').click(function(event) {
+    $('#play').click(function (event) {
         $('.settings').hide();
         $('.board').show();
         turn = x;
@@ -51,8 +52,8 @@ $(document).ready(function() {
 
     function areEqual() {
         var len = arguments.length;
-        for (var i=1; i<len; i++) {
-            if (arguments[i] === 0 || arguments[i] !== arguments[i-1]) {
+        for (var i = 1; i < len; i++) {
+            if (arguments[i] === 0 || arguments[i] !== arguments[i - 1]) {
                 return false;
             }
         }
@@ -64,17 +65,15 @@ $(document).ready(function() {
             if (board[cell]) {
                 if (board[cell] === 1) {
                     $("#" + cell).text("X");
-                }
-                else {
+                } else {
                     $("#" + cell).text("O");
                 }
-            }
-            else {
+            } else {
                 $("#" + cell).text("");
             }
         }
     }
-    
+
     function reset() {
         resetBoard();
         showBoard();
@@ -90,22 +89,20 @@ $(document).ready(function() {
         }
     }
 
-    function showEnd(player, tie) {
+    function showEnd(isTie) {
         $('.board').hide();
         $('.end').show();
-        if (!tie) {
-            console.log(x);
-            if (!x) {
+        if (!isTie) {
+            if (!turn && x) {
                 $('.end').text("Player" + " X " + "Wins!");
+            } else {
+                $('.end').text("Player" + " O " + "Wins!");
             }
-            else {
-                $('.end').text("Player" + " O " + "Wins!");            
-            }
-        }
-        else {
+        } else {
             $('.end').text("It's a tie!");
         }
     }
+
     function checkEnd() {
         if (areEqual(board.tl, board.tm, board.tr) ||
             areEqual(board.ml, board.mm, board.mr) ||
@@ -115,19 +112,15 @@ $(document).ready(function() {
             areEqual(board.tr, board.mr, board.br) ||
             areEqual(board.tl, board.mm, board.br) ||
             areEqual(board.bl, board.mm, board.tr)) {
-            
+            end = true;
             if (comp) {
-                showEnd(false, false);
+                setTimeout(showEnd, 1000, false);
             }
-            else {
-                showEnd(x, false);
-            }
+        } else if (board.tl && board.tm && board.tr &&
+            board.ml && board.mm && board.mr &&
+            board.bl && board.bm && board.br) {
+            showEnd(true);
         }
-        else if (board.tl && board.tm && board.tr &&
-                 board.ml && board.mm && board.mr &&
-                 board.bl && board.bm && board.br) {
-            showEnd(x, true);
-        }        
     }
 
     function calculateMove() {
@@ -141,11 +134,11 @@ $(document).ready(function() {
             case 3:
                 return "ml";
             case 4:
-                return "mm";            
+                return "mm";
             case 5:
                 return "mr";
             case 6:
-                return "bl";            
+                return "bl";
             case 7:
                 return "bm";
             case 8:
@@ -153,38 +146,49 @@ $(document).ready(function() {
         }
     }
 
-    $('.square').click(function(event) {
-        var id = event.target.id;
-        if (comp && turn || !comp) {
-            if (!(board[id] > 0)) {
-                if (x) {
-                    board[id] = 1;
-                    x = false;
-                }
-                else {
-                    board[id] = 2;
-                    x = true;
-                }
-            }
+    function computerMove() {
+        var move;
+        var max = 0;
+        do {
+            move = calculateMove();
+            max++;
+        } while (board[move] !== 0 && max < 9);
+        if (x) {
+            board[move] = 2;
+        } else {
+            board[move] = 1;
         }
-        if (comp) {
-            do {
-                var move = calculateMove();
-            } while (board[move] !== 0)
-            if (x) {
-                board[move] = 1;
-                x = false;
-            }
-            else {
-                board[move] = 2;
-                x = true;
-            }
-        }
+        turn = true;
         showBoard();
-        checkEnd();
+        if (!end) {
+            checkEnd();
+        }
+    }
+
+    $('.square').click(function (event) {
+        if (!end) {
+            var id = event.target.id;
+            if (comp && turn || !comp) {
+                if (!(board[id] > 0)) {
+                    if (x) {
+                        board[id] = 1;
+                    } else {
+                        board[id] = 2;
+                    }
+                    turn = false;
+                }
+            }
+            if (comp) {
+                setTimeout(computerMove, 1000);
+            }
+            showBoard();
+            console.log(board);
+            checkEnd();
+        }
+
 
     });
-    $('.end').click(function(event) {
+    $('.end').click(function (event) {
         reset();
     });
 
