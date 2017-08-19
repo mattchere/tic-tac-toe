@@ -1,197 +1,264 @@
 $(document).ready(function () {
-
-    // Initialise variables
     var x = true;
-    var comp = true;
-    var board = {
-        tl: 0,
-        tm: 0,
-        tr: 0,
-        ml: 0,
-        mm: 0,
-        mr: 0,
-        bl: 0,
-        bm: 0,
-        br: 0
-    };
     var turn;
-    var end = false;
+    var end;
+    var moves = 0;
+    var board = [[0, 0, 0],
+                 [0, 0, 0],
+                 [0, 0, 0]];
+    var squareCoords = {
+        tl: [0, 0],
+        tm: [0, 1],
+        tr: [0, 2],
+        ml: [1, 0],
+        mm: [1, 1],
+        mr: [1, 2],
+        bl: [2, 0],
+        bm: [2, 1],
+        br: [2, 2]
+    };
 
-    // Hide the board in the beginning
+    // Setup reusable functions
+    function startGame() {
+        // Hide the settings screen
+        $('.settings').hide();
+
+        // Reset the board
+        board = [[0, 0, 0],
+                 [0, 0, 0],
+                 [0, 0, 0]];
+
+        // Initialise variables
+        turn = x;
+        end = false;        
+        moves = 0;
+
+        // Show the board
+        $('.board').show();
+        showBoard(board);
+        console.log(board);
+
+        // Start with x
+        if (!x) {
+            computerMove(board);
+            turn = true;
+            showBoard(board);
+        }
+    }
+
+    function showBoard(board) {
+        for (var key in squareCoords) {
+            var curr = board[squareCoords[key][0]][squareCoords[key][1]];
+            var symbol = "";
+            if (curr === 1) {
+                symbol = "X";
+            }
+            else if (curr === 2) {
+                symbol = "O";
+            }
+
+            $('#' + key).text(symbol);
+
+        }
+    }
+
+    function calcMove(board) {
+        switch (Math.floor(Math.random() * 9)) {
+          case 0:
+            return 'tl';
+          case 1:
+            return 'tm';
+          case 2:
+            return 'tr';
+          case 3:
+            return 'ml';
+          case 4:
+            return 'mm';
+          case 5:
+            return 'mr';
+          case 6:
+            return 'bl';
+          case 7:
+            return 'bm';
+          case 8:
+            return 'br';
+        }
+    }
+
+    function computerMove(board) {
+        if (moves < 9) {
+            do {
+                var move = calcMove(board);
+                var cRow = squareCoords[move][0];
+                var cCol = squareCoords[move][1];
+            } 
+            while (board[cRow][cCol] !== 0);
+            
+            if (x) {
+                board[cRow][cCol] = 2;
+            }
+            else {
+                board[cRow][cCol] = 1;
+            }
+            moves++;
+            return [cRow, cCol];
+        }
+    }
+
+    function checkEnd(board, lastRow, lastCol, isPlayer) {
+        var tie = false;
+        var symbol;
+        if (isPlayer) {
+            symbol = x ? 1 : 2;
+        }
+        else {
+            symbol = x ? 2 : 1;
+        }
+
+        // Check row
+        end = true;
+        for (var i=0; i<3; i++) {
+            if (board[lastRow][i] !== symbol) {
+                end = false;
+                break;
+            }
+        }
+
+        // Check col
+        if (!end) {
+            end = true;
+            for (var i=0; i<3; i++) {
+                if (board[i][lastCol] !== symbol) {
+                    end = false;
+                    break;
+                }
+            }
+        }
+
+        // Check diagonal
+        if (lastRow === lastCol && !end) {
+            end = true;
+            for (var i=0; i<3; i++) {
+                if (board[i][i] !== symbol) {
+                    end = false;
+                    break;
+                }
+            }
+        }
+
+        // Check anti-diagonal
+        if (lastRow+lastCol === 2 && !end) {
+            end = true;
+            for (var j=0; j<3; j++) {
+                if (board[j][3-j] !== symbol) {
+                    end = false;
+                    break;
+                }
+            }
+        }
+
+        // Check for tie
+        if (moves === 9 && !end) {
+            console.log(board);            
+            end = true;
+            tie = true;
+        }
+
+        if (end) {
+            console.log(end);
+            if (tie) {
+                setTimeout(function () {
+                    showEnd(0)
+                }, 1000);
+            }
+            else {
+                setTimeout(function () {
+                    showEnd(symbol)
+                }, 1000);
+            }
+        }
+    }
+
+    function showEnd(symbol) {
+        $('.board').hide();
+        $('.end').show();
+
+        var text = "";
+        if (symbol === 1) {
+            text = "X Wins!";
+        }
+        else if (symbol === 2) {
+            text = "O Wins!";
+        }
+        else {
+            text = "It was a tie!"
+        }
+        $('.end').text(text);
+    }
+    
+
+    // Hide the other screens
     $('.board').hide();
     $('.end').hide();
 
-    // Click events to select player settings
-    $('#x').click(function (event) {
+    // Setup settings click events
+    $('#x').click(function(event) {
         x = true;
         $('#x').addClass('selected');
         $('#o').removeClass('selected');
     });
-    $('#o').click(function (event) {
+
+    $('#o').click(function(event) {
         x = false;
-        $('#o').addClass('selected');
-        $('#x').removeClass('selected');
-    })
-    $('#comp').click(function (event) {
-        comp = true;
-        $('#comp').addClass('selected');
-        $('#player').removeClass('selected');
-    });
-    $('#player').click(function (event) {
-        comp = false;
-        $('#player').addClass('selected');
-        $('#comp').removeClass('selected');
+        $('#o').addClass('selected'); 
+        $('#x').removeClass('selected');        
     });
 
-    // Play button to start the game with current settings
-    $('#play').click(function (event) {
-        $('.settings').hide();
-        $('.board').show();
-        turn = x;
+    $('#play').click(function(event) {
+        startGame();
     });
 
-    function areEqual() {
-        var len = arguments.length;
-        for (var i = 1; i < len; i++) {
-            if (arguments[i] === 0 || arguments[i] !== arguments[i - 1]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    function showBoard() {
-        for (var cell in board) {
-            if (board[cell]) {
-                if (board[cell] === 1) {
-                    $("#" + cell).text("X");
-                } else {
-                    $("#" + cell).text("O");
+    // Create click events for board cells
+    $('.square').click(function(event) {
+        if (turn) {
+            // Player's move
+            var id = event.target.id;
+            var row = squareCoords[id][0];
+            var col = squareCoords[id][1];
+            var cell = board[row][col];
+            if (cell === 0) {
+                if (x) {
+                    board[row][col] = 1;
                 }
-            } else {
-                $("#" + cell).text("");
+                else {
+                    board[row][col] = 2;
+                }
+                turn = false;
+                moves++;
+
+                showBoard(board);
+                checkEnd(board, row, col, true);
+                // Computer's move
+                if (!end) {
+                    var coords = computerMove(board);
+                    row = coords[0];
+                    col = coords[1];
+        
+                    setTimeout(function() {
+                        showBoard(board);
+                        turn = true;
+                        checkEnd(board, row, col, false);
+                    }, 1000);
+                }
             }
         }
-    }
+    });
 
-    function reset() {
-        resetBoard();
-        showBoard();
-        x = true;
-        comp = true;
+    // Click to restart event
+    $('.end').click(function(event) {
         $('.end').hide();
         $('.settings').show();
-    }
-
-    function resetBoard() {
-        for (var cell in board) {
-            board[cell] = 0;
-        }
-    }
-
-    function showEnd(isTie) {
-        $('.board').hide();
-        $('.end').show();
-        if (!isTie) {
-            if (!turn && x) {
-                $('.end').text("Player" + " X " + "Wins!");
-            } else {
-                $('.end').text("Player" + " O " + "Wins!");
-            }
-        } else {
-            $('.end').text("It's a tie!");
-        }
-    }
-
-    function checkEnd() {
-        if (areEqual(board.tl, board.tm, board.tr) ||
-            areEqual(board.ml, board.mm, board.mr) ||
-            areEqual(board.bl, board.bm, board.br) ||
-            areEqual(board.tl, board.ml, board.bl) ||
-            areEqual(board.tm, board.mm, board.bm) ||
-            areEqual(board.tr, board.mr, board.br) ||
-            areEqual(board.tl, board.mm, board.br) ||
-            areEqual(board.bl, board.mm, board.tr)) {
-            end = true;
-            if (comp) {
-                setTimeout(showEnd, 1000, false);
-            }
-        } else if (board.tl && board.tm && board.tr &&
-            board.ml && board.mm && board.mr &&
-            board.bl && board.bm && board.br) {
-            showEnd(true);
-        }
-    }
-
-    function calculateMove() {
-        switch (Math.floor(Math.random() * 9)) {
-            case 0:
-                return "tl";
-            case 1:
-                return "tm";
-            case 2:
-                return "tr";
-            case 3:
-                return "ml";
-            case 4:
-                return "mm";
-            case 5:
-                return "mr";
-            case 6:
-                return "bl";
-            case 7:
-                return "bm";
-            case 8:
-                return "br";
-        }
-    }
-
-    function computerMove() {
-        var move;
-        var max = 0;
-        do {
-            move = calculateMove();
-            max++;
-        } while (board[move] !== 0 && max < 9);
-        if (x) {
-            board[move] = 2;
-        } else {
-            board[move] = 1;
-        }
-        turn = true;
-        showBoard();
-        if (!end) {
-            checkEnd();
-        }
-    }
-
-    $('.square').click(function (event) {
-        if (!end) {
-            var id = event.target.id;
-            if (comp && turn || !comp) {
-                if (!(board[id] > 0)) {
-                    if (x) {
-                        board[id] = 1;
-                    } else {
-                        board[id] = 2;
-                    }
-                    turn = false;
-                }
-            }
-            if (comp) {
-                setTimeout(computerMove, 1000);
-            }
-            showBoard();
-            console.log(board);
-            checkEnd();
-        }
-
-
+        x = true;
     });
-    $('.end').click(function (event) {
-        reset();
-    });
-
-
 
 });

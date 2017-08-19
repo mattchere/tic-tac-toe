@@ -48,7 +48,6 @@ h3 {
     width: 400px;
 }
 .symbol,
-.opponent,
 .btn-play {
     background-color: grey;
     border: 2px solid #44477F;
@@ -67,7 +66,8 @@ h3 {
     
     width: 100px;
 }
-.settings p {
+.settings p,
+.board {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -75,7 +75,9 @@ h3 {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
 
+.settings p {
     position: relative;
     top: 50%;
     left: 50%;
