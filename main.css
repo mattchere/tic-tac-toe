@@ -28,7 +28,7 @@ h3 {
 .settings,
 .board,
 .end {
-    background-color: #44477F;    
+    background-color: #44477F;
     height: 400px;
     width: 400px;
 }
@@ -38,9 +38,9 @@ h3 {
 .square {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-         box-sizing: border-box;  
+         box-sizing: border-box;
 }
-.choose-sym {    
+.choose-sym {
     height: 325px;
     padding: 50px 0;
     text-align: center;
@@ -63,7 +63,7 @@ h3 {
     width: 50px;
 }
 .btn-play {
-    
+
     width: 100px;
 }
 .settings p,
@@ -83,6 +83,7 @@ h3 {
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
+
 .play-area {
     background-color: #44477F;
     height: 75px;
@@ -110,7 +111,7 @@ h3 {
     display: inline-block;
     font-size: 50px;
     height: 120px;
-    line-height: 120px;   
+    line-height: 120px;
     text-align: center;
     vertical-align: middle;
     width: 120px;
@@ -135,7 +136,7 @@ h3 {
     border-width: 2px 2px 2px 0;
 }
 #mm {
-    border-width: 2px 2px 2px 2px; 
+    border-width: 2px 2px 2px 2px;
 }
 #mr {
     border-width: 2px 0 2px 2px;

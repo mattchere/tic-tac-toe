@@ -3,9 +3,11 @@ $(document).ready(function () {
     var turn;
     var end;
     var moves = 0;
-    var board = [[0, 0, 0],
-                 [0, 0, 0],
-                 [0, 0, 0]];
+    var board = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ];
     var squareCoords = {
         tl: [0, 0],
         tm: [0, 1],
@@ -24,13 +26,15 @@ $(document).ready(function () {
         $('.settings').hide();
 
         // Reset the board
-        board = [[0, 0, 0],
-                 [0, 0, 0],
-                 [0, 0, 0]];
+        board = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
 
         // Initialise variables
         turn = x;
-        end = false;        
+        end = false;
         moves = 0;
 
         // Show the board
@@ -52,8 +56,7 @@ $(document).ready(function () {
             var symbol = "";
             if (curr === 1) {
                 symbol = "X";
-            }
-            else if (curr === 2) {
+            } else if (curr === 2) {
                 symbol = "O";
             }
 
@@ -64,24 +67,24 @@ $(document).ready(function () {
 
     function calcMove(board) {
         switch (Math.floor(Math.random() * 9)) {
-          case 0:
-            return 'tl';
-          case 1:
-            return 'tm';
-          case 2:
-            return 'tr';
-          case 3:
-            return 'ml';
-          case 4:
-            return 'mm';
-          case 5:
-            return 'mr';
-          case 6:
-            return 'bl';
-          case 7:
-            return 'bm';
-          case 8:
-            return 'br';
+            case 0:
+                return 'tl';
+            case 1:
+                return 'tm';
+            case 2:
+                return 'tr';
+            case 3:
+                return 'ml';
+            case 4:
+                return 'mm';
+            case 5:
+                return 'mr';
+            case 6:
+                return 'bl';
+            case 7:
+                return 'bm';
+            case 8:
+                return 'br';
         }
     }
 
@@ -91,13 +94,12 @@ $(document).ready(function () {
                 var move = calcMove(board);
                 var cRow = squareCoords[move][0];
                 var cCol = squareCoords[move][1];
-            } 
+            }
             while (board[cRow][cCol] !== 0);
-            
+
             if (x) {
                 board[cRow][cCol] = 2;
-            }
-            else {
+            } else {
                 board[cRow][cCol] = 1;
             }
             moves++;
@@ -110,14 +112,13 @@ $(document).ready(function () {
         var symbol;
         if (isPlayer) {
             symbol = x ? 1 : 2;
-        }
-        else {
+        } else {
             symbol = x ? 2 : 1;
         }
 
         // Check row
         end = true;
-        for (var i=0; i<3; i++) {
+        for (var i = 0; i < 3; i++) {
             if (board[lastRow][i] !== symbol) {
                 end = false;
                 break;
@@ -127,7 +128,7 @@ $(document).ready(function () {
         // Check col
         if (!end) {
             end = true;
-            for (var i=0; i<3; i++) {
+            for (var i = 0; i < 3; i++) {
                 if (board[i][lastCol] !== symbol) {
                     end = false;
                     break;
@@ -138,7 +139,7 @@ $(document).ready(function () {
         // Check diagonal
         if (lastRow === lastCol && !end) {
             end = true;
-            for (var i=0; i<3; i++) {
+            for (var i = 0; i < 3; i++) {
                 if (board[i][i] !== symbol) {
                     end = false;
                     break;
@@ -147,10 +148,10 @@ $(document).ready(function () {
         }
 
         // Check anti-diagonal
-        if (lastRow+lastCol === 2 && !end) {
+        if (lastRow + lastCol === 2 && !end) {
             end = true;
-            for (var j=0; j<3; j++) {
-                if (board[j][3-j] !== symbol) {
+            for (var j = 0; j < 3; j++) {
+                if (board[j][3 - j] !== symbol) {
                     end = false;
                     break;
                 }
@@ -159,7 +160,7 @@ $(document).ready(function () {
 
         // Check for tie
         if (moves === 9 && !end) {
-            console.log(board);            
+            console.log(board);
             end = true;
             tie = true;
         }
@@ -170,8 +171,7 @@ $(document).ready(function () {
                 setTimeout(function () {
                     showEnd(0)
                 }, 1000);
-            }
-            else {
+            } else {
                 setTimeout(function () {
                     showEnd(symbol)
                 }, 1000);
@@ -186,40 +186,38 @@ $(document).ready(function () {
         var text = "";
         if (symbol === 1) {
             text = "X Wins!";
-        }
-        else if (symbol === 2) {
+        } else if (symbol === 2) {
             text = "O Wins!";
-        }
-        else {
+        } else {
             text = "It was a tie!"
         }
         $('.end').text(text);
     }
-    
+
 
     // Hide the other screens
     $('.board').hide();
     $('.end').hide();
 
     // Setup settings click events
-    $('#x').click(function(event) {
+    $('#x').click(function (event) {
         x = true;
         $('#x').addClass('selected');
         $('#o').removeClass('selected');
     });
 
-    $('#o').click(function(event) {
+    $('#o').click(function (event) {
         x = false;
-        $('#o').addClass('selected'); 
-        $('#x').removeClass('selected');        
+        $('#o').addClass('selected');
+        $('#x').removeClass('selected');
     });
 
-    $('#play').click(function(event) {
+    $('#play').click(function (event) {
         startGame();
     });
 
     // Create click events for board cells
-    $('.square').click(function(event) {
+    $('.square').click(function (event) {
         if (turn) {
             // Player's move
             var id = event.target.id;
@@ -229,8 +227,7 @@ $(document).ready(function () {
             if (cell === 0) {
                 if (x) {
                     board[row][col] = 1;
-                }
-                else {
+                } else {
                     board[row][col] = 2;
                 }
                 turn = false;
@@ -243,8 +240,8 @@ $(document).ready(function () {
                     var coords = computerMove(board);
                     row = coords[0];
                     col = coords[1];
-        
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         showBoard(board);
                         turn = true;
                         checkEnd(board, row, col, false);
@@ -255,7 +252,7 @@ $(document).ready(function () {
     });
 
     // Click to restart event
-    $('.end').click(function(event) {
+    $('.end').click(function (event) {
         $('.end').hide();
         $('.settings').show();
         x = true;
